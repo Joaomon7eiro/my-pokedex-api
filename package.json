@@ -16,7 +16,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "dev:debug": "nodemon --inspect src/server.js",
-    "start": "sucrase-node src/server.js"
+    "start": "node dist/server.js",
+    "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
