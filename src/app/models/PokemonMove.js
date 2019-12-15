@@ -7,6 +7,7 @@ class PokemonMove extends Model {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
         },
       },
       {
