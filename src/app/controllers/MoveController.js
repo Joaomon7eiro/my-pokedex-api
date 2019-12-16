@@ -8,8 +8,8 @@ class MoveController {
         Yup.object().shape({
           id: Yup.number().required(),
           name: Yup.string().required(),
-          power: Yup.number().required(),
-          type_id: Yup.number().required(),
+          power: Yup.number(),
+          type_id: Yup.number(),
         })
       ),
     });

@@ -12,7 +12,7 @@ module.exports = {
       },
       power: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       type_id: {
         type: Sequelize.INTEGER,
