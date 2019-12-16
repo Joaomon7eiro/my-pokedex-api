@@ -12,14 +12,14 @@ module.exports = {
         allowNull: true,
         references: { model: 'pokemons', key: 'id' },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
       },
       move_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: { model: 'moves', key: 'id' },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
       },
       created_at: {
         type: Sequelize.DATE,
