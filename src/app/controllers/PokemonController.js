@@ -41,7 +41,7 @@ class PokemonController {
       limit: 20,
       order: ['id'],
       offset: (page - 1) * limit,
-      attributes: ['id', 'name', 'image'],
+      attributes: ['id', 'name', 'image', 'capture_date'],
     };
 
     let pokemons;
