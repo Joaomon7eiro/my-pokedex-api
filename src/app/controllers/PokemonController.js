@@ -28,7 +28,7 @@ class PokemonController {
       return res.status(400).json({ message: 'Pokemon already captured' });
     }
 
-    await Pokemon.create(req.body);
+    await Pokemon.create({ ...req.body, user_id: req.userId });
 
     return res.json(req.body);
   }
@@ -38,6 +38,7 @@ class PokemonController {
     const limit = 20;
 
     const queryOptions = {
+      where: { user_id: req.userId },
       limit: 20,
       order: ['id'],
       offset: (page - 1) * limit,
@@ -74,12 +75,13 @@ class PokemonController {
   async show(req, res) {
     const { id } = req.params;
 
-    const pokemon = await Pokemon.findByPk(id, {
+    const pokemon = await Pokemon.findOne({
+      where: { user_id: req.userId, id },
       attributes: ['id', 'name', 'image', 'height', 'weight', 'capture_date'],
     });
 
     if (!pokemon) {
-      res.status(400).json({ error: 'Pokemon does not exists' });
+      return res.status(400).json({ error: 'Pokemon does not exists' });
     }
 
     const moves = await PokemonMove.findAll({
