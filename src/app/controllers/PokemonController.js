@@ -85,6 +85,14 @@ class PokemonController {
   async show(req, res) {
     const { id } = req.params;
 
+    const schema = Yup.object().shape({
+      id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid({ id }))) {
+      return res.status(400).json({ message: 'Invalid request body' });
+    }
+
     const pokemon = await UserPokemon.findOne({
       where: { user_id: req.userId, pokemon_id: id },
       include: [
