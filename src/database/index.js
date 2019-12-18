@@ -8,8 +8,17 @@ import Type from '../app/models/Type';
 import PokemonType from '../app/models/PokemonType';
 import PokemonMove from '../app/models/PokemonMove';
 import User from '../app/models/User';
+import UserPokemon from '../app/models/UserPokemon';
 
-const models = [User, Pokemon, Move, Type, PokemonType, PokemonMove];
+const models = [
+  User,
+  UserPokemon,
+  Pokemon,
+  Move,
+  Type,
+  PokemonType,
+  PokemonMove,
+];
 
 class Database {
   constructor() {

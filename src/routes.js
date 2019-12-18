@@ -10,6 +10,7 @@ import TypeController from './app/controllers/TypeController';
 import MoveController from './app/controllers/MoveController';
 import PokemonMoveController from './app/controllers/PokemonMoveController';
 import PokemonTypeController from './app/controllers/PokemonTypeController';
+import UserPokemonController from './app/controllers/UserPokemonController';
 
 const routes = Router();
 
@@ -26,5 +27,7 @@ routes.post('/types', TypeController.create);
 routes.post('/moves', MoveController.create);
 routes.post('/pokemons/:id/moves', PokemonMoveController.create);
 routes.post('/pokemons/:id/types', PokemonTypeController.create);
+
+routes.post('/users/:id/pokemons', UserPokemonController.create);
 
 export default routes;

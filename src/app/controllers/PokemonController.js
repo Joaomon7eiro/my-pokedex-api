@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { Op } from 'sequelize';
 
 import Pokemon from '../models/Pokemon';
+import UserPokemon from '../models/UserPokemon';
 import PokemonMove from '../models/PokemonMove';
 import PokemonType from '../models/PokemonType';
 import Move from '../models/Move';
@@ -24,37 +25,46 @@ class PokemonController {
 
     const pokemon = await Pokemon.findByPk(req.body.id);
 
-    if (pokemon) {
-      return res.status(400).json({ message: 'Pokemon already captured' });
+    if (!pokemon) {
+      await Pokemon.create(req.body);
     }
-
-    await Pokemon.create({ ...req.body, user_id: req.userId });
 
     return res.json(req.body);
   }
 
   async index(req, res) {
     const { page = 1, query } = req.query;
-    const limit = 20;
+    const limit = 18;
 
     const queryOptions = {
       where: { user_id: req.userId },
-      limit: 20,
+      limit,
       order: ['id'],
       offset: (page - 1) * limit,
-      attributes: ['id', 'name', 'image', 'capture_date'],
     };
 
-    let pokemons;
+    // let pokemons;
 
-    if (query) {
-      pokemons = await Pokemon.findAndCountAll({
-        where: { name: { [Op.like]: `%${query}%` } },
-        ...queryOptions,
-      });
-    } else {
-      pokemons = await Pokemon.findAndCountAll(queryOptions);
-    }
+    const pokemons = await UserPokemon.findAndCountAll({
+      attributes: ['id'],
+      include: [
+        {
+          model: Pokemon,
+          as: 'pokemon',
+          attributes: ['id', 'name', 'image', 'capture_date'],
+        },
+      ],
+      ...queryOptions,
+    });
+
+    // if (query) {
+    //   pokemons = await Pokemon.findAndCountAll({
+    //     where: { name: { [Op.like]: `%${query}%` } },
+    //     ...queryOptions,
+    //   });
+    // } else {
+    //   pokemons = await Pokemon.findAndCountAll(queryOptions);
+    // }
 
     let totalPagesNumber = 1;
 
@@ -67,7 +77,7 @@ class PokemonController {
 
     return res.json({
       data: pokemons.rows,
-      currentPage: page,
+      currentPage: Number(page),
       totalPages: totalPagesNumber,
     });
   }
@@ -75,9 +85,22 @@ class PokemonController {
   async show(req, res) {
     const { id } = req.params;
 
-    const pokemon = await Pokemon.findOne({
-      where: { user_id: req.userId, id },
-      attributes: ['id', 'name', 'image', 'height', 'weight', 'capture_date'],
+    const pokemon = await UserPokemon.findOne({
+      where: { user_id: req.userId, pokemon_id: id },
+      include: [
+        {
+          model: Pokemon,
+          as: 'pokemon',
+          attributes: [
+            'id',
+            'name',
+            'image',
+            'height',
+            'weight',
+            'capture_date',
+          ],
+        },
+      ],
     });
 
     if (!pokemon) {
