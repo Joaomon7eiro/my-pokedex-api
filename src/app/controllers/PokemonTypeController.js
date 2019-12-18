@@ -19,7 +19,7 @@ class PokemonTypeController {
     });
 
     if (types.length > 0) {
-      return res.status(400).json({ message: 'Pokemon types already exists' });
+      return res.status(200).json({ message: 'Pokemon types already exists' });
     }
 
     const pokemonTypes = req.body.types.map(typeId => {

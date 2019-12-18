@@ -19,7 +19,7 @@ class PokemonMoveController {
     });
 
     if (moves.length > 0) {
-      return res.status(400).json({ message: 'Pokemon moves already exists' });
+      return res.status(200).json({ message: 'Pokemon moves already exists' });
     }
 
     const pokemonMoves = req.body.moves.map(moveId => {
